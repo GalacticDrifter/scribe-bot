@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ScribeBot: Transcription, Chat, and Advise</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" />
+    <script src="/static/js/socket.io.min.js"></script>
+    <link rel="stylesheet" href="static/css/styles.css" />
+</head>
+
+<body>
+    <div class="sidebar">
+        <h1>ScribeBot</h1>
+        <hr style="width: 100%;" />
+        <a href="#transcribe" onclick="showContent('transcribe')">Transcribe</a>
+        <a href="#chat" onclick="showContent('chat')">Chat</a>
+        <a href="#advisor" onclick="showContent('advisor')">Advisor</a>
+
+        <div class="status-container">
+            <div id="indicator">VAD is <span style="color: red">LOADING</span></div>
+            <br>
+            <div style="display: flex;align-items:center;"><span class="status-light" id="status-light"></span>
+                Connection Status
+            </div>
+            <br><br>
+            <div class="logo-container">
+                <img src="{{ url_for('static', filename='img/logo.png') }}" alt="ScribeBot" />
+            </div>
+        </div>
+
+
+    </div>
+    <div class="content-container">
+        <h1 id="page_title"></h1>
+        <div class="control-row">
+            <button id="toggle_vad_button" onclick="window.toggleVAD()" disabled>START VAD</button>
+            <button id="toggle_playlist_button" onclick="togglePlaylist()">Show Playlist</button>
+        </div>
+        <div id="loading">Processing...</div>
+
+        <div id="transcribe" class="content active">
+            <div id="transcription">
+                <div id="transcribe_feed"></div>
+                <div id="playlist_container">
+                    <ol id="playlist" reversed></ol>
+                </div>
+            </div>
+        </div>
+        <div id="chat" class="content">
+            <div id="transcription">
+                <div id="chat_feed"></div>
+            </div>
+        </div>
+        <div id="advisor" class="content">
+            <div id="transcription">
+                <div id="advisor_feed"></div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/onnxruntime-web/dist/ort.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@ricky0123/vad-web@0.0.13/dist/bundle.min.js"></script>
+    <script type="module">
+        import { interpolateInferno } from "https://cdn.skypack.dev/d3-scale-chromatic@3";
+        import { marked } from "https://cdn.jsdelivr.net/npm/marked/lib/marked.esm.js";
+
+        document.addEventListener('DOMContentLoaded', async function () {
+            window.showContent = function (id) {
+                document.querySelectorAll('.content').forEach(element => {
+                    element.classList.remove('active');
+                });
+                document.getElementById(id).classList.add('active');
+                window.currentTab = id; // Set the current active tab
+                document.getElementById('page_title').innerText = id.charAt(0).toUpperCase() + id.slice(1);
+
+                if (window.currentTab === 'transcribe') {
+                    document.getElementById('toggle_playlist_button').style.display = 'block';
+                } else {
+                    document.getElementById('toggle_playlist_button').style.display = 'none';
+                }
+            };
+
+            // Initialize the current tab based on the URL hash
+            const hash = window.location.hash.substring(1);
+            if (hash) {
+                showContent(hash);
+            } else {
+                window.currentTab = 'transcribe'; // Default tab
+                showContent(window.currentTab);
+            }
+
+            // Listen for hash changes
+            window.addEventListener('hashchange', function () {
+                const hash = window.location.hash.substring(1);
+                if (hash) {
+                    showContent(hash);
+                }
+            });
+
+            window.togglePlaylist = function () {
+                const playlistContainer = document.getElementById('playlist_container');
+                const toggleButton = document.getElementById('toggle_playlist_button');
+                if (playlistContainer.style.display === 'none' || playlistContainer.style.display === '') {
+                    playlistContainer.style.display = 'block';
+                    toggleButton.textContent = 'Hide Playlist';
+                } else {
+                    playlistContainer.style.display = 'none';
+                    toggleButton.textContent = 'Show Playlist';
+                }
+            }
+
+            const loading = setInterval(() => {
+                const indicator = document.getElementById("indicator");
+                const [message, ...dots] = indicator.innerHTML.split(".");
+                indicator.innerHTML = message + ".".repeat((dots.length + 1) % 7);
+            }, 200);
+
+            function addAudio(audioUrl) {
+                const entry = document.createElement("li");
+                const audio = document.createElement("audio");
+                audio.controls = true;
+                audio.src = audioUrl;
+                entry.appendChild(audio);
+                return entry;
+            }
+
+            // Function to save transcript
+            function saveTranscript(data) {
+                console.log('Saving transcript:', data);
+                fetch('/save_transcript', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('Success:', data);
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                    });
+            }
+
+            // Function to parse Markdown and add the response to the feed
+            function addResponseToFeed(response, feed_name) {
+                const feed = document.getElementById(feed_name);
+
+                // Create a new response element
+                const responseElement = document.createElement('div');
+                responseElement.innerHTML = marked.parse(response);
+
+                // Style the previous responses
+                const previousResponses = feed.children;
+                for (let i = 0; i < previousResponses.length; i++) {
+                    previousResponses[i].style.color = '#777';  // Light gray
+                }
+
+                // Add the new response with the default color
+                feed.appendChild(responseElement);
+
+                // Scroll to the bottom to show the latest response
+                feed.scrollTop = feed.scrollHeight;
+            }
+
+            const socket = io.connect('http://' + document.domain + ':' + location.port, {
+                transports: ['websocket'],
+                pingTimeout: 60000,  // Match the server settings
+                pingInterval: 30000, // Match the server settings
+            });
+
+            socket.on('connect', function () {
+                console.log('Connected to server');
+                document.getElementById('status-light').classList.remove('disconnected');
+                document.getElementById('status-light').classList.add('connected');
+            });
+
+            socket.on('connection_response', (data) => {
+                console.log('Server response:', data);
+            });
+
+            socket.on('disconnect', function (reason) {
+                console.log('Disconnected from server:', reason);
+                document.getElementById('status-light').classList.remove('connected');
+                document.getElementById('status-light').classList.add('disconnected');
+                if (reason === 'io server disconnect') {
+                    // The server disconnected us, attempt to reconnect manually
+                    socket.connect();
+                }
+            });
+
+            socket.on('connect_error', function (reason) {
+                console.log('Connection error:', reason);
+                document.getElementById('status-light').classList.remove('connected');
+                document.getElementById('status-light').classList.add('disconnected');
+            });
+
+            socket.on('transcription', function (data) {
+                console.log('Transcription received:', data);
+                if (data.error) {
+                    console.error('Transcription error:', data.error);
+                } else {
+                    // Handle transcription data
+                    if (window.currentTab === 'chat') {
+                        addResponseToFeed(data.response, 'chat_feed');
+                    } else if (window.currentTab === 'advisor') {
+                        addResponseToFeed(data.response, 'advisor_feed');
+                        saveTranscript(data); // Save the transcript
+                    } else {
+                        document.getElementById('transcribe_feed').innerText += data.transcription;
+                    }
+                    document.getElementById('loading').style.display = 'none';
+                }
+            });
+
+            try {
+                const myvad = await vad.MicVAD.new({
+                    positiveSpeechThreshold: 0.8,
+                    minSpeechFrames: 5,
+                    maxSpeechFrames: 1650, // Limit to about 55 seconds of audio
+                    preSpeechPadFrames: 10,
+                    redemptionFrames: 15, // Allow a short pause without stopping
+                    onFrameProcessed: (probs) => {
+                        const indicatorColor = interpolateInferno(probs.isSpeech / 2);
+                        document.body.style.setProperty("--indicator-color", indicatorColor);
+                    },
+                    onSpeechEnd: (arr) => {
+                        const wavBuffer = vad.utils.encodeWAV(arr);
+                        const base64 = vad.utils.arrayBufferToBase64(wavBuffer);
+                        const url = `data:audio/wav;base64,${base64}`;
+                        const el = addAudio(url);
+                        const speechList = document.getElementById("playlist");
+                        speechList.prepend(el);
+
+                        // Emit the audio data to the server for transcription
+                        const emitEvent = window.currentTab === 'chat' ? 'chat_stream' : window.currentTab === 'advisor' ? 'advisor_stream' : 'transcribe_stream';
+
+                        socket.emit(emitEvent, wavBuffer);
+
+                        document.getElementById('loading').style.display = 'block';
+                    },
+                });
+                window.myvad = myvad;
+
+                clearInterval(loading);
+                window.toggleVAD = () => {
+                    console.log("ran toggle vad");
+                    if (myvad.listening === false) {
+                        myvad.start();
+                        document.getElementById("toggle_vad_button").textContent = "STOP VAD";
+                        document.getElementById("indicator").innerHTML = `VAD is <span style="color:green">RUNNING</span>`
+                    } else {
+                        myvad.pause();
+                        document.getElementById("toggle_vad_button").textContent = "START VAD";
+                        document.getElementById("indicator").innerHTML = `VAD is <span style="color:red">STOPPED</span>`;
+                        const indicatorColor = interpolateInferno(0);
+                        document.body.style.setProperty("--indicator-color", indicatorColor);
+                    }
+                };
+                window.toggleVAD();
+                document.getElementById("toggle_vad_button").disabled = false;
+            } catch (e) {
+                console.error("Failed:", e);
+                clearInterval(loading);
+                document.getElementById("indicator").innerHTML = `<span style="color:red">VAD failed to load</span>`;
+            }
+        });
+    </script>
+
+</body>
+
+</html>

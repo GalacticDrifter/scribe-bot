@@ -1,0 +1,10 @@
+[
+    {
+        "timestamp": "2024-08-06 13:03:47",
+        "advisorId": "A000",
+        "userId": "U000",
+        "callerId": "C001",
+        "callerTranscription": "hello do you know what you're speaking to\n\n",
+        "advisorResponse": "Hi there! You're speaking to Quinn Lawrence from SkyGrid Hosting. How can I assist you today? Are you looking for information on our cloud hosting solutions, or do you have specific needs you'd like to discuss?\n\n"
+    }
+]

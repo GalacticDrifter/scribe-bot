@@ -1,0 +1,12 @@
+__pycache__
+
+logs/
+
+config/.env
+config/client_secret.json
+config/desktop_client_secret.json
+config/google_app_credentials.json
+
+token.json
+
+datastore/

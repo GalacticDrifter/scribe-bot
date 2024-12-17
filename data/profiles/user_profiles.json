@@ -1,0 +1,52 @@
+{
+    "U000": {
+        "name": "Quinn Lawrence",
+        "experience_level": "Senior",
+        "specialization": "Basic hosting plans",
+        "preferred_sales_approach": "Technical and strategic",
+        "performance_metrics": {
+            "conversion_rate": "15%",
+            "customer_satisfaction": "97%"
+        }
+    },
+    "U001": {
+        "name": "Jarood Sullivan",
+        "experience_level": "Senior",
+        "specialization": "Basic hosting plans",
+        "preferred_sales_approach": "Friendly and informative",
+        "performance_metrics": {
+            "conversion_rate": "25%",
+            "customer_satisfaction": "82%"
+        }
+    },
+    "U002": {
+        "name": "Bob Bobbins",
+        "experience_level": "Junior",
+        "specialization": "Basic hosting plans",
+        "preferred_sales_approach": "Technical and strategic",
+        "performance_metrics": {
+            "conversion_rate": "14%",
+            "customer_satisfaction": "83%"
+        }
+    },
+    "U003": {
+        "name": "Sarah Sarahson",
+        "experience_level": "Junior",
+        "specialization": "Basic hosting plans",
+        "preferred_sales_approach": "Friendly and informative",
+        "performance_metrics": {
+            "conversion_rate": "12%",
+            "customer_satisfaction": "83%"
+        }
+    },
+    "U004": {
+        "name": "Wendy Walters",
+        "experience_level": "Junior",
+        "specialization": "Basic hosting plans",
+        "preferred_sales_approach": "Technical and strategic",
+        "performance_metrics": {
+            "conversion_rate": "21%",
+            "customer_satisfaction": "86%"
+        }
+    }
+}

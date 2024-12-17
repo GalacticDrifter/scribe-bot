@@ -1,0 +1,27 @@
+/* src/components/TranscribeFeed.css */
+.feed {
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+.message {
+  margin-bottom: 0.5rem;
+}
+
+.message.transcription {
+  font-style: normal;
+  color: gray;
+  font-style: italic;
+}
+
+.message.response {
+  padding: 0rem 1rem;
+  border-radius: 1rem;
+  background: #fbfafd;
+  color: #333238;
+  border: 1px solid #dcdcde;
+}
+
+.italicious {
+  font-style: normal !important;
+}

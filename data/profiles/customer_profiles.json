@@ -1,0 +1,142 @@
+{
+    "C000": {
+        "name": "Jared Sullivan",
+        "title": "Operations Manager",
+        "company_name": "Ecomify Inc.",
+        "business_type": "E-commerce",
+        "company_size": "Medium",
+        "hosting_needs": "High performance, low latency",
+        "preferred_contact_method": "Chat",
+        "previous_interactions": [
+            "General inquiry",
+            "Product feedback"
+        ],
+        "notes": "Enjoys painting in her free time"
+    },
+    "C001": {
+        "name": "Alice Johnson",
+        "title": "IT Director",
+        "company_name": "MediHealth Solutions",
+        "business_type": "Healthcare",
+        "company_size": "Medium",
+        "hosting_needs": "High availability, compliance with health regulations",
+        "preferred_contact_method": "Chat",
+        "previous_interactions": [
+            "Complaint resolution",
+            "Service upgrade"
+        ],
+        "notes": "Absolutely hates the color red"
+    },
+    "C002": {
+        "name": "Ed Zapolsky",
+        "title": "CTO",
+        "company_name": "ZapTech Innovations",
+        "business_type": "Technology",
+        "company_size": "Large",
+        "hosting_needs": "High performance, low latency",
+        "preferred_contact_method": "Email",
+        "previous_interactions": [
+            "General inquiry",
+            "Product feedback"
+        ],
+        "notes": "Runs marathons"
+    },
+    "C003": {
+        "name": "Bob Brown",
+        "title": "Founder",
+        "company_name": "Brown's Boutique",
+        "business_type": "E-commerce",
+        "company_size": "Small",
+        "hosting_needs": "Scalable resources, secure transactions",
+        "preferred_contact_method": "Email",
+        "previous_interactions": [
+            "Complaint resolution",
+            "Service upgrade"
+        ],
+        "notes": "Prefers early morning meetings"
+    },
+    "C004": {
+        "name": "Diane Green",
+        "title": "CFO",
+        "company_name": "Green Financial",
+        "business_type": "Finance",
+        "company_size": "Small",
+        "hosting_needs": "High availability, compliance with financial regulations",
+        "preferred_contact_method": "Chat",
+        "previous_interactions": [
+            "Complaint resolution",
+            "Service upgrade"
+        ],
+        "notes": "Enjoys traveling to Europe"
+    },
+    "C005": {
+        "name": "Leslie Sullivan",
+        "title": "President & CEO",
+        "company_name": "Gate Way Solutions",
+        "business_type": "Software",
+        "company_size": "Small",
+        "hosting_needs": "High performance, low latency",
+        "preferred_contact_method": "Email",
+        "previous_interactions": [
+            "Inquiry about pricing",
+            "Technical support call"
+        ],
+        "notes": "Has a pet dog"
+    },
+    "C006": {
+        "name": "Laura White",
+        "title": "VP of Engineering",
+        "company_name": "WhiteTech",
+        "business_type": "Technology",
+        "company_size": "Large",
+        "hosting_needs": "High availability, compliance with financial regulations",
+        "preferred_contact_method": "Email",
+        "previous_interactions": [
+            "Detailed demo request",
+            "Contract negotiation"
+        ],
+        "notes": "Has a black belt in karate"
+    },
+    "C007": {
+        "name": "Peter Parker",
+        "title": "IT Manager",
+        "company_name": "Parker Finances",
+        "business_type": "Finance",
+        "company_size": "Small",
+        "hosting_needs": "High availability, compliance with financial regulations",
+        "preferred_contact_method": "Phone",
+        "previous_interactions": [
+            "Inquiry about pricing",
+            "Technical support call"
+        ],
+        "notes": "Fan of Marvel comics"
+    },
+    "C008": {
+        "name": "Mary Miller",
+        "title": "Head of IT",
+        "company_name": "Miller Healthcare",
+        "business_type": "Healthcare",
+        "company_size": "Large",
+        "hosting_needs": "Data security, HIPAA compliance",
+        "preferred_contact_method": "Email",
+        "previous_interactions": [
+            "Inquiry about pricing",
+            "Technical support call"
+        ],
+        "notes": "Has a son playing AAA soccer league"
+    },
+    "C009": {
+        "name": "Samuel Adams",
+        "title": "Project Manager",
+        "company_name": "Adams Tech Solutions",
+        "business_type": "Technology",
+        "company_size": "Medium",
+        "hosting_needs": "Scalable resources, secure transactions",
+        "preferred_contact_method": "Email",
+        "previous_interactions": [
+            "General inquiry",
+            "Product feedback"
+        ],
+        "notes": "Enjoys brewing beer at home"
+    }
+}

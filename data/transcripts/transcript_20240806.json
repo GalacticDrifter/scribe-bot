@@ -1,0 +1,16 @@
+[
+    {
+        "transcription": "Hello, hello, can you hear me?\n"
+    },
+    {
+        "transcription": "Testing 1, 2, 3.\n"
+    },
+    {
+        "transcription": "Hey, what can you help me out with today?\n",
+        "response": "Hi there! I'm here to assist you with anything related to SkyGrid Hosting. Here are a few examples of things I can help you with:\n\n1. **Account Management**:\n   - Setting up a new account\n   - Modifying account details\n   - Recovering lost passwords\n\n2. **Web Hosting Services**:\n   - Selecting the right hosting plan\n   - Upgrading or downgrading your current plan\n   - Domain registration and transfers\n\n3. **Technical Support**:\n   - Troubleshooting website issues\n   - Email setup and configuration\n   - Performance optimization\n\n4. **Billing and Payments**:\n   - Understanding your invoice\n   - Managing payment methods\n   - Addressing billing issues\n\n5. **Website Development**:\n   - Installing CMS platforms (e.g., WordPress, Joomla)\n   - SSL certificate installation\n   - Guidance with website migration\n\n6. **Other Inquiries**:\n   - Contacting customer support\n   - Learning about promotions and discounts\n\nPlease let me know what specific help you need!\n\n"
+    },
+    {
+        "transcription": "Hey, how's it going?\n",
+        "response": "Hello! It's going great, thank you. How can I assist you today with your SkyGrid Hosting needs?\n\n"
+    }
+]

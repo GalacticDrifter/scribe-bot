@@ -1,0 +1,45 @@
+{
+  "manifest_version": 3,
+  "name": "Google Meet Caption Logger",
+  "version": "1.0",
+  "description": "A Chrome extension to capture and log Google Meet captions.",
+  "permissions": [
+    "identity",
+    "activeTab",
+    "storage",
+    "scripting"
+  ],
+  "host_permissions": [
+    "https://meet.google.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://meet.google.com/*"],
+      "js": ["inject.js"],
+      "run_at": "document_end"
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "logo192.png",
+      "48": "logo192.png",
+      "128": "logo192.png"
+    }
+  },
+  "icons": {
+    "16": "logo192.png",
+    "48": "logo192.png",
+    "128": "logo512.png"
+  },
+  "web_accessible_resources": [{
+    "resources": ["socket.io.min.js"],
+    "matches": ["https://meet.google.com/*"]
+  }],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  }
+}
